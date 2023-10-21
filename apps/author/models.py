@@ -1,3 +1,32 @@
 from django.db import models
 
-# Create your models here.
+
+class Author(models.Model):
+    first_name = models.CharField(
+        max_length=100,
+        unique=True,
+        null=True,
+        blank=True,
+        verbose_name="First Name"
+    )
+    last_name = models.CharField(
+        max_length=100,
+        unique=True,
+        null=True,
+        blank=True,
+        verbose_name="Last Name"
+    )
+    patronymic = models.CharField(
+        max_length=100,
+        unique=True,
+        null=True,
+        blank=True,
+        verbose_name="Patronymic"
+    )
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} {self.patronymic}".strip()
+
+    class Meta:
+        verbose_name = 'Author'
+        verbose_name_plural = 'Authors'
