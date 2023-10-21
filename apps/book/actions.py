@@ -1,8 +1,3 @@
-from rest_framework.decorators import permission_classes
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-
 from apps.utils import actions
 from .models import Book, Bookmark
 from .serializers import BookmarkSerializer
@@ -47,4 +42,3 @@ class BookMarkActionHandler(actions.BaseActionHandler):
             )
         bookmark_instance.delete()
         return Response(status=status.HTTP_200_OK)
-

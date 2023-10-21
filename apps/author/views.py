@@ -15,4 +15,3 @@ class AuthorViewSet(viewsets.ModelViewSet):  # JUST FOR ADMIN USERS
         else:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
-

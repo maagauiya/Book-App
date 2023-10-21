@@ -19,7 +19,7 @@ def send_activation_mail(user_email, activate_token):
 
     email_message = (
         f"""<br><b>Please follow the link to activate your account:</b> <br/><br/>
-        {settings.DOMAIN}api/v1/user_activate/{activate_token}/'"""
+        {settings.DOMAIN}api/v1/user_activate/{activate_token}/"""
     )
 
     msg = EmailMessage(

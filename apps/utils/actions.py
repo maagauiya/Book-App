@@ -21,7 +21,7 @@ class BaseActionHandler(APIView):
     def handle(self, **kwargs):
         handler = getattr(self, 'action_{}'.format(self.action), None)
         if not handler:
-            return Response("Bad action", code=status.HTTP_400_BAD_REQUEST)
+            return Response("Bad action", status=status.HTTP_400_BAD_REQUEST)
 
         kwargs.pop('action', None)
         pk = kwargs.pop('pk', None)

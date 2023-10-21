@@ -4,6 +4,7 @@ from apps.author.models import Author
 from apps.genre.models import Genre
 from apps.user.models import User
 
+
 class Book(models.Model):
     title = models.CharField(
         max_length=100,
@@ -43,6 +44,12 @@ class Book(models.Model):
     class Meta:
         verbose_name = 'Book'
         verbose_name_plural = 'Books'
+
+    def recalculate_average_rating(self):
+        reviews = self.book_reviews.all()
+        total_rating = sum([review.rating for review in reviews])
+        self.average_rating = total_rating / reviews.count() if reviews.count() > 0 else 0
+        self.save()
 
 
 class Bookmark(models.Model):
