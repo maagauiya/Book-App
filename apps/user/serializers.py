@@ -5,7 +5,7 @@ from rest_framework import serializers
 from .models import User
 
 
-class CreateUserEmailSerializer(serializers.ModelSerializer):
+class BaseUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
@@ -31,10 +31,25 @@ class CreateUserEmailSerializer(serializers.ModelSerializer):
             username=validated_data['email'],
             email=validated_data['email'],
             first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            is_active=False
+            last_name=validated_data['last_name']
         )
         user.set_password(validated_data['password'])
+        user.save()
+        return user
+
+
+class CreateUserEmailSerializer(BaseUserSerializer):
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        user.is_active = False
+        user.save()
+        return user
+
+
+class CreateUserWithoutActivationSerializer(BaseUserSerializer):
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        user.is_active = True
         user.save()
         return user
 

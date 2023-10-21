@@ -6,24 +6,40 @@ from django.db.transaction import atomic
 from django.contrib.auth import authenticate
 from django.conf import settings
 
-from ..serializers import CreateUserEmailSerializer, UserSerializer, LoginSerializer
+from ..serializers import (
+    CreateUserEmailSerializer, UserSerializer, LoginSerializer,
+    CreateUserWithoutActivationSerializer
+)
 from .tasks import send_activation_mail
 from ..models import User
 from .utils import verify_token, generate_token
 
 
-class RegisterByEmailView(generics.CreateAPIView):
+class BaseRegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
-    serializer_class = CreateUserEmailSerializer
+
+    def post_save_actions(self, user):
+        pass
 
     def create(self, request, *args, **kwargs):
-        """Registration by email"""
-        with atomic():
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            created_user = serializer.save()
-            send_activation_mail.apply_async(args=(created_user.email, created_user.activate_token))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        self.post_save_actions(user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class RegisterByEmailView(BaseRegisterView):
+    """With activation code"""
+    serializer_class = CreateUserEmailSerializer
+
+    def post_save_actions(self, user):
+        send_activation_mail.apply_async(args=(user.email, user.activate_token))
+
+
+class RegisterWithoutActivationView(BaseRegisterView):
+    """Without activation code"""
+    serializer_class = CreateUserWithoutActivationSerializer
 
 
 class UserActivateView(generics.RetrieveAPIView):
