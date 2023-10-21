@@ -5,7 +5,11 @@ from .models import Book, Bookmark
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'description', 'display_genres', 'display_authors','published_date']
+    list_display = [
+        'id', 'title', 'description',
+        'display_genres', 'display_authors',
+        'published_date', 'average_rating'
+    ]
     search_fields = ['title']
     autocomplete_fields = ['genres', 'authors']
 
@@ -22,7 +26,7 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(Bookmark)
 class BookmarkAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'display_book_title','display_user_username']
+    list_display = ['id', 'user', 'display_book_title', 'display_user_username']
     search_fields = ['user__username', 'book__title']
     autocomplete_fields = ['user', 'book']
 
@@ -35,4 +39,3 @@ class BookmarkAdmin(admin.ModelAdmin):
         return obj.user.username
 
     display_user_username.short_description = 'Username'
-

@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import generics, status, exceptions
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
