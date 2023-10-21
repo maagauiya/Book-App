@@ -4,14 +4,12 @@ from django.db import models
 class Genre(models.Model):
     name = models.CharField(
         max_length=100,
-        unique=True,
         null=True,
         blank=True,
         verbose_name="Name of genre"
     )
     description = models.CharField(
         max_length=500,
-        unique=True,
         null=True,
         blank=True,
         verbose_name="Description of genre"
