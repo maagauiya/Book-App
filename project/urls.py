@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/v1/user_activate/<slug:token>/', views.UserActivateView.as_view(), name="user_activate"),
     path('api/v1/login_by_email/', views.LoginByEmailView.as_view(), name='login_by_email'),
     path('api/v1/authors/', include('apps.author.urls')),
+    path('api/v1/genres/', include('apps.genre.urls')),
 ]
