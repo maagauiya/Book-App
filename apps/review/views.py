@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 
-class ReviewViewSet(viewsets.ModelViewSet):  # JUST FOR ADMIN USERS
+class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
